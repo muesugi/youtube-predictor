@@ -1,5 +1,6 @@
 import os
 import json
+import config
 
 import google.oauth2.credentials
 
@@ -14,7 +15,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 
 # This OAuth 2.0 access scope allows for full read/write access to the
 # authenticated user's account and requires requests to use an SSL connection.
-KEY = 'AIzaSyCC7clFS9FnaqUbH2uchw46typeV1y7lkE'
+KEY = config.KEY
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
 
@@ -132,7 +133,7 @@ if __name__ == '__main__':
 
     ### 1. GET CHANNEL ID OF ALL UPLOADS FROM THE USER ID (ex; bgfilms) ###
     USER_ID = None
-    channel_id = 'UCJFp8uSYCjXOMnkUyb3CQ3Q'
+    channel_id = 'UCoC47do520os_4DBMEFGg4A' #'UCJFp8uSYCjXOMnkUyb3CQ3Q'
 
     if not channel_id:
         channel_id = channel_id_by_user_id(client,
