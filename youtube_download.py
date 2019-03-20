@@ -14,7 +14,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 
 # This OAuth 2.0 access scope allows for full read/write access to the
 # authenticated user's account and requires requests to use an SSL connection.
-KEY = 'AIzaSyCC7clFS9FnaqUbH2uchw46typeV1y7lkE'
+KEY = 'AIzaSyBD_FtExsGdyNmcohaAKsxHHaYPYbmYWiQ'
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
 
