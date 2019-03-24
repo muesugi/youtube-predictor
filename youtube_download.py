@@ -1,5 +1,6 @@
 import os
 import json
+import config
 
 import google.oauth2.credentials
 
@@ -132,7 +133,7 @@ if __name__ == '__main__':
 
     ### 1. GET CHANNEL ID OF ALL UPLOADS FROM THE USER ID (ex; bgfilms) ###
     USER_ID = None
-    channel_id = 'UCJFp8uSYCjXOMnkUyb3CQ3Q'
+    channel_id = 'UCoC47do520os_4DBMEFGg4A' #'UCJFp8uSYCjXOMnkUyb3CQ3Q'
 
     if not channel_id:
         channel_id = channel_id_by_user_id(client,
@@ -149,6 +150,21 @@ if __name__ == '__main__':
     ### 3. GET VIDEO INFO FROM PLAYLIST ID & OUTPUT TO FILE ###
     # NOTE: this is just proof of concept, this is would be where we upload to a database.
     videos = all_video_data_by_playlist_id(client, uploaded_playlist_id)
+
+    for video in videos:
+        channelId = video['snippet']['channelId']
+        channelTitle = video['snippet']['channelTitle']
+        videoTitle = video['snippet']['title']
+        desc = video['snippet']['description']
+        duration = video['contentDetails']['duration']
+        categoryId = video['snippet']['categoryId']
+        publishedAt = video['snippet']['publishedAt']
+        defaultLang = video['snippet']['channelTitle']
+        tags = video['snippet']['tags']
+        likeCount = video['statistics']['likeCount']
+        dislikeCount = video['statistics']['dislikeCount']
+        viewCount = video['statistics']['viewCount']
+        # add video details to db here
 
     file_name = 'videos_{}.json'.format(USER_ID if USER_ID else channel_id)
 
