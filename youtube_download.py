@@ -1,6 +1,7 @@
 import os
 import json
 import config
+import pymysql
 
 import google.oauth2.credentials
 
@@ -15,9 +16,32 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 
 # This OAuth 2.0 access scope allows for full read/write access to the
 # authenticated user's account and requires requests to use an SSL connection.
-KEY = 'AIzaSyBD_FtExsGdyNmcohaAKsxHHaYPYbmYWiQ'
+KEY = config.KEY
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
+
+connection = pymysql.connect(host='127.0.0.1',
+                            port = 3306,
+                            user = config.USER,
+                            password = config.PASSWORD,
+                            db = 'video_data')
+conn = connection.cursor()
+
+def create_tables():
+    # Create tables (if they don't already exist)
+    try:
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS videos "
+            + "(id VARCHAR(20) PRIMARY KEY, channelId TEXT, "
+            + "playlistId TEXT, channelTitle TEXT, "
+            + "title TEXT, description TEXT, duration TEXT, "
+            + "categoryId INT, publishedAt TEXT, defaultAudioLanguage TEXT, "
+            + "likeCount INT, dislikeCount INT, viewCount INT, commentCount INT);"
+        )
+    except TypeError as e:
+        print(e)
+        return None
+
 
 def get_authenticated_service():
     # structure from https://medium.com/greyatom/youtube-data-in-python-6147160c5833,
@@ -151,7 +175,10 @@ if __name__ == '__main__':
     # NOTE: this is just proof of concept, this is would be where we upload to a database.
     videos = all_video_data_by_playlist_id(client, uploaded_playlist_id)
 
+    create_tables()
+
     for video in videos:
+        id = video['id']
         channelId = video['snippet']['channelId']
         channelTitle = video['snippet']['channelTitle']
         videoTitle = video['snippet']['title']
@@ -164,7 +191,19 @@ if __name__ == '__main__':
         likeCount = video['statistics']['likeCount']
         dislikeCount = video['statistics']['dislikeCount']
         viewCount = video['statistics']['viewCount']
+        commentCount = video['statistics']['commentCount']
         # add video details to db here
+        try:
+            sql = "INSERT INTO videos(id, channelId, playlistId, channelTitle, title, description, duration, categoryId, publishedAt, defaultAudioLanguage, likeCount, dislikeCount, viewCount, commentCount) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+            vals = (id, channelId, uploaded_playlist_id, channelTitle, videoTitle, desc, duration,
+            categoryId, publishedAt, defaultLang, likeCount, dislikeCount, viewCount,
+            commentCount)
+            conn.execute(sql, vals)
+            connection.commit()
+        except TypeError as e:
+            print(e)
+
+    conn.close()
 
     file_name = 'videos_{}.json'.format(USER_ID if USER_ID else channel_id)
 
