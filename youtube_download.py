@@ -21,9 +21,9 @@ API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
 
 connection = pymysql.connect(host='127.0.0.1',
-                            port = 3306,
-                            user = config.USER,
-                            password = config.PASSWORD,
+                            port = 3305,
+                            user = "root",
+                            password = "Datascience1951a",
                             db = 'video_data')
 conn = connection.cursor()
 
