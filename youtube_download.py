@@ -186,7 +186,10 @@ if __name__ == '__main__':
         duration = video['contentDetails']['duration']
         categoryId = video['snippet']['categoryId']
         publishedAt = video['snippet']['publishedAt']
-        defaultLang = video['snippet']['defaultAudioLanguage']
+        if 'defaultAudioLanguage' in video['snippet']:
+            defaultLang = video['snippet']['defaultAudioLanguage']
+        else:
+            defaultLang = None
         tags = video['snippet']['tags']
         likeCount = video['statistics']['likeCount']
         dislikeCount = video['statistics']['dislikeCount']
