@@ -197,7 +197,7 @@ if __name__ == '__main__':
         commentCount = video['statistics']['commentCount']
         # add video details to db here
         try:
-            sql = "INSERT INTO videos(id, channelId, playlistId, channelTitle, title, description, duration, categoryId, publishedAt, defaultAudioLanguage, likeCount, dislikeCount, viewCount, commentCount) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+            sql = "INSERT IGNORE INTO videos(id, channelId, playlistId, channelTitle, title, description, duration, categoryId, publishedAt, defaultAudioLanguage, likeCount, dislikeCount, viewCount, commentCount) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
             vals = (id, channelId, uploaded_playlist_id, channelTitle, videoTitle, desc, duration,
             categoryId, publishedAt, defaultLang, likeCount, dislikeCount, viewCount,
             commentCount)
