@@ -22,8 +22,8 @@ API_VERSION = 'v3'
 
 connection = pymysql.connect(host='127.0.0.1',
                             port = 3305,
-                            user = "root",
-                            password = "Datascience1951a",
+                            user = config.USER,
+                            password = config.PASSWORD,
                             db = 'video_data')
 conn = connection.cursor()
 
@@ -186,7 +186,7 @@ if __name__ == '__main__':
         duration = video['contentDetails']['duration']
         categoryId = video['snippet']['categoryId']
         publishedAt = video['snippet']['publishedAt']
-        defaultLang = video['snippet']['channelTitle']
+        defaultLang = video['snippet']['defaultAudioLanguage']
         tags = video['snippet']['tags']
         likeCount = video['statistics']['likeCount']
         dislikeCount = video['statistics']['dislikeCount']
