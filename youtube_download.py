@@ -186,15 +186,16 @@ if __name__ == '__main__':
         duration = video['contentDetails']['duration']
         categoryId = video['snippet']['categoryId']
         publishedAt = video['snippet']['publishedAt']
-        if 'defaultAudioLanguage' in video['snippet']:
-            defaultLang = video['snippet']['defaultAudioLanguage']
-        else:
-            defaultLang = None
-        tags = video['snippet']['tags']
+
         likeCount = video['statistics']['likeCount']
         dislikeCount = video['statistics']['dislikeCount']
         viewCount = video['statistics']['viewCount']
-        commentCount = video['statistics']['commentCount']
+
+        # columns that may not exist in the data. .get returns None if dne
+        defaultLang = video['snippet'].get('defaultAudioLanguage')
+        # tags = video['snippet'].get('tags')
+        commentCount = video['statistics'].get('commentCount')
+
         # add video details to db here
         try:
             sql = "INSERT IGNORE INTO videos(id, channelId, playlistId, channelTitle, title, description, duration, categoryId, publishedAt, defaultAudioLanguage, likeCount, dislikeCount, viewCount, commentCount) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
