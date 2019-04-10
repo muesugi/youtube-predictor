@@ -187,11 +187,10 @@ if __name__ == '__main__':
         categoryId = video['snippet']['categoryId']
         publishedAt = video['snippet']['publishedAt']
 
-        likeCount = video['statistics']['likeCount']
-        dislikeCount = video['statistics']['dislikeCount']
-        viewCount = video['statistics']['viewCount']
-
         # columns that may not exist in the data. .get returns None if dne
+        likeCount = video['statistics'].get('likeCount')
+        dislikeCount = video['statistics'].get('dislikeCount')
+        viewCount = video['statistics'].get('viewCount')
         defaultLang = video['snippet'].get('defaultAudioLanguage')
         # tags = video['snippet'].get('tags')
         commentCount = video['statistics'].get('commentCount')
