@@ -75,7 +75,7 @@ def all_videos_by_playlist_id(client, playlist_id):
             playlistId=playlist_id,
     )
     videos += playlist_list_response["items"]
-    print("Total # results should be:", playlist_list_response["pageInfo"]["totalResults"])
+    # print("Total # results should be:", playlist_list_response["pageInfo"]["totalResults"])
 
 
     # youtube data api uses pagination;
@@ -113,11 +113,11 @@ def all_video_data_by_playlist_id(client, playlist_id):
         ids_response = playlist_items_list_by_playlist_id(client, **kwargs)
 
         if is_first_call:
-            print("Total # results should be:", ids_response["pageInfo"]["totalResults"])
+            # print("Total # results should be:", ids_response["pageInfo"]["totalResults"])
             is_first_call = False
 
         ids_str = ",".join([vid["contentDetails"]["videoId"] for vid in ids_response["items"]])
-        print(ids_str)
+        # print(ids_str)
 
         # have to do a separate call to videos list endpoint to get statistics.
         # included in this one since the call takes a max of 50 ids concatenated in 'id' param
@@ -156,8 +156,8 @@ if __name__ == '__main__':
     # just need to specify which it is (-c or -u probably)
 
     ### 1. GET CHANNEL ID OF ALL UPLOADS FROM THE USER ID (ex; bgfilms) ###
-    USER_ID = None
-    channel_id = 'UCoC47do520os_4DBMEFGg4A' #'UCJFp8uSYCjXOMnkUyb3CQ3Q'
+    USER_ID = 'gordonramsay'#None
+    channel_id = None
 
     if not channel_id:
         channel_id = channel_id_by_user_id(client,
@@ -169,7 +169,7 @@ if __name__ == '__main__':
                             part='contentDetails',
                             id=channel_id )
     uploaded_playlist_id = related_playlists["uploads"]
-    print("uploaded_playlist_id: ", uploaded_playlist_id)
+    # print("uploaded_playlist_id: ", uploaded_playlist_id)
 
     ### 3. GET VIDEO INFO FROM PLAYLIST ID & OUTPUT TO FILE ###
     # NOTE: this is just proof of concept, this is would be where we upload to a database.
@@ -190,11 +190,26 @@ if __name__ == '__main__':
             defaultLang = video['snippet']['defaultAudioLanguage']
         else:
             defaultLang = None
-        tags = video['snippet']['tags']
-        likeCount = video['statistics']['likeCount']
-        dislikeCount = video['statistics']['dislikeCount']
-        viewCount = video['statistics']['viewCount']
-        commentCount = video['statistics']['commentCount']
+        if 'tags' in video['snippet']:
+            tags = video['snippet']['tags']
+        else:
+            tags = None
+        if 'likeCount' in video['statistics']:
+            likeCount = video['statistics']['likeCount']
+        else:
+            likeCount = None
+        if 'dislikeCount' in video['statistics']:
+            dislikeCount = video['statistics']['dislikeCount']
+        else:
+            dislikeCount = None
+        if 'viewCount' in video['statistics']:
+            viewCount = video['statistics']['viewCount']
+        else:
+            viewCount = None
+        if 'commentCount' in video['statistics']:
+            commentCount = video['statistics']['commentCount']
+        else:
+            commentCount = None
         # add video details to db here
         try:
             sql = "INSERT IGNORE INTO videos(id, channelId, playlistId, channelTitle, title, description, duration, categoryId, publishedAt, defaultAudioLanguage, likeCount, dislikeCount, viewCount, commentCount) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
@@ -208,8 +223,8 @@ if __name__ == '__main__':
 
     conn.close()
 
-    file_name = 'videos_{}.json'.format(USER_ID if USER_ID else channel_id)
-
-    with open(file_name, 'w+') as output_file:
-        json.dump(videos, output_file)
-        print("{} results written to {}".format(len(videos), file_name))
+    # file_name = 'videos_{}.json'.format(USER_ID if USER_ID else channel_id)
+    #
+    # with open(file_name, 'w+') as output_file:
+    #     json.dump(videos, output_file)
+    #     print("{} results written to {}".format(len(videos), file_name))
