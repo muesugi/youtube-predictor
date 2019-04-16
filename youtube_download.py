@@ -2,6 +2,8 @@ import os
 import json
 import config
 import pymysql
+import argparse
+import sys
 
 import google.oauth2.credentials
 
@@ -117,7 +119,6 @@ def all_video_data_by_playlist_id(client, playlist_id):
             is_first_call = False
 
         ids_str = ",".join([vid["contentDetails"]["videoId"] for vid in ids_response["items"]])
-        print(ids_str)
 
         # have to do a separate call to videos list endpoint to get statistics.
         # included in this one since the call takes a max of 50 ids concatenated in 'id' param
@@ -156,13 +157,43 @@ if __name__ == '__main__':
     # just need to specify which it is (-c or -u probably)
 
     ### 1. GET CHANNEL ID OF ALL UPLOADS FROM THE USER ID (ex; bgfilms) ###
-    USER_ID = None
-    channel_id = 'UCoC47do520os_4DBMEFGg4A' #'UCJFp8uSYCjXOMnkUyb3CQ3Q'
+    # can set manually here, or use command line args
+    user_id = None
+    channel_id = None
 
+    #----- Command Line Args --------#
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-u", "--userid", dest="user_id", help="One or more User ID of channel user")
+    parser.add_argument("-c", "--channelid", dest="channel_id", help="One or more Channel ID of channel")
+
+    args = parser.parse_args()
+    print(args.channel_id)
+
+    # make sure only one parameter is set (either user id or channel id, and via this script or command line)
+    n_args_set = bool(args.user_id) + bool(args.channel_id) + bool(user_id) + bool(channel_id)
+    if n_args_set > 1:
+        console.log("Error: more than one user id or channel id specified")
+        sys.exit()
+    elif n_args_set == 0:
+        console.log("Error: must specify one user id or channel id. `python3 -c <channel-id> is probably what you want.`")
+        sys.exit()
+
+    # assuming only one of the four parameters are set, set the user_id and channel_id based on command line args
+    if args.user_id:
+        user_id = args.user_id
+        channel_id = None
+    elif args.channel_id:
+        channel_id = args.channel_id
+        user_id = None
+
+    print("channel_id: ", channel_id, "user_id: ", user_id)
+
+    # / ----- Command Line Args --------#
+    # if only user id has been specified, find the channel id from the user id
     if not channel_id:
         channel_id = channel_id_by_user_id(client,
         part='id',
-        forUsername=USER_ID)
+        forUsername=user_id)
 
     ### 2. GET PLAYLIST ID OF ALL UPLOADS FROM THE CHANNEL ID ###
     related_playlists = related_playlists_by_channel_id( client,
@@ -172,7 +203,6 @@ if __name__ == '__main__':
     print("uploaded_playlist_id: ", uploaded_playlist_id)
 
     ### 3. GET VIDEO INFO FROM PLAYLIST ID & OUTPUT TO FILE ###
-    # NOTE: this is just proof of concept, this is would be where we upload to a database.
     videos = all_video_data_by_playlist_id(client, uploaded_playlist_id)
 
     create_tables()
@@ -208,7 +238,7 @@ if __name__ == '__main__':
 
     conn.close()
 
-    file_name = 'videos_{}.json'.format(USER_ID if USER_ID else channel_id)
+    file_name = 'videos_{}.json'.format(user_id if user_id else channel_id)
 
     with open(file_name, 'w+') as output_file:
         json.dump(videos, output_file)
