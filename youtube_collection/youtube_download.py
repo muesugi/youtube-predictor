@@ -172,10 +172,10 @@ if __name__ == '__main__':
     # make sure only one parameter is set (either user id or channel id, and via this script or command line)
     n_args_set = bool(args.user_id) + bool(args.channel_id) + bool(user_id) + bool(channel_id)
     if n_args_set > 1:
-        console.log("Error: more than one user id or channel id specified")
+        print("Error: more than one user id or channel id specified")
         sys.exit()
     elif n_args_set == 0:
-        console.log("Error: must specify one user id or channel id. `python3 -c <channel-id> is probably what you want.`")
+        print("Error: must specify one user id or channel id. `python3 -c <channel-id> is probably what you want.`")
         sys.exit()
 
     # assuming only one of the four parameters are set, set the user_id and channel_id based on command line args

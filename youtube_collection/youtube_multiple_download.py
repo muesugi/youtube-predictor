@@ -229,7 +229,7 @@ if __name__ == '__main__':
 
     # make sure at leaset one parameter is set
     if bool(args.user_ids) + bool(args.channel_ids) == 0:
-        console.log("Error: must specify at least one user id or channel id. `python3 -c <channel-id> is probably what you want.`")
+        print("Error: must specify at least one user id or channel id. `python3 -c <channel-id> is probably what you want.`")
         sys.exit()
 
     for cid in args.channel_ids:

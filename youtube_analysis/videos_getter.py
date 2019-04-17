@@ -27,6 +27,8 @@ def create_tables():
     # except TypeError as e:
     #     print(e)
     #     return None
+    pass
+
 
 def query_videos(sqlquery, args=None, fetch_one=False):
     with connection.cursor() as cursor:
