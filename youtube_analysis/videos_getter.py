@@ -30,10 +30,10 @@ def create_tables():
     pass
 
 
-def query_videos(sqlquery, args=None, fetch_one=False):
+def query_videos(sqlquery, params=None, fetch_one=False):
     with connection.cursor() as cursor:
-        if args:
-            cursor.execute(sqlquery, args)
+        if params:
+            cursor.execute(sqlquery, [params])
         else:
             cursor.execute(sqlquery)
 
