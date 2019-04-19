@@ -3,6 +3,7 @@ import json
 import config
 import pymysql
 
+
 import google.oauth2.credentials
 
 # REMEMBER TO INSTALL NECESSARY PACKAGES when running for the first time!
@@ -156,13 +157,15 @@ if __name__ == '__main__':
     # just need to specify which it is (-c or -u probably)
 
     ### 1. GET CHANNEL ID OF ALL UPLOADS FROM THE USER ID (ex; bgfilms) ###
-    USER_ID = 'gordonramsay'#None
-    channel_id = None
+    USER_ID = None
+    channel_id = 'UCxD2E-bVoUbaVFL0Q3PvJTg'
 
     if not channel_id:
         channel_id = channel_id_by_user_id(client,
         part='id',
         forUsername=USER_ID)
+
+    print(channel_id)
 
     ### 2. GET PLAYLIST ID OF ALL UPLOADS FROM THE CHANNEL ID ###
     related_playlists = related_playlists_by_channel_id( client,
@@ -186,30 +189,15 @@ if __name__ == '__main__':
         duration = video['contentDetails']['duration']
         categoryId = video['snippet']['categoryId']
         publishedAt = video['snippet']['publishedAt']
-        if 'defaultAudioLanguage' in video['snippet']:
-            defaultLang = video['snippet']['defaultAudioLanguage']
-        else:
-            defaultLang = None
-        if 'tags' in video['snippet']:
-            tags = video['snippet']['tags']
-        else:
-            tags = None
-        if 'likeCount' in video['statistics']:
-            likeCount = video['statistics']['likeCount']
-        else:
-            likeCount = None
-        if 'dislikeCount' in video['statistics']:
-            dislikeCount = video['statistics']['dislikeCount']
-        else:
-            dislikeCount = None
-        if 'viewCount' in video['statistics']:
-            viewCount = video['statistics']['viewCount']
-        else:
-            viewCount = None
-        if 'commentCount' in video['statistics']:
-            commentCount = video['statistics']['commentCount']
-        else:
-            commentCount = None
+
+        # columns that may not exist in the data. .get returns None if dne
+        likeCount = video['statistics'].get('likeCount')
+        dislikeCount = video['statistics'].get('dislikeCount')
+        viewCount = video['statistics'].get('viewCount')
+        defaultLang = video['snippet'].get('defaultAudioLanguage')
+        # tags = video['snippet'].get('tags')
+        commentCount = video['statistics'].get('commentCount')
+
         # add video details to db here
         try:
             sql = "INSERT IGNORE INTO videos(id, channelId, playlistId, channelTitle, title, description, duration, categoryId, publishedAt, defaultAudioLanguage, likeCount, dislikeCount, viewCount, commentCount) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"

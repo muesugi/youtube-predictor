@@ -5,7 +5,8 @@ CS1951A Data Science
 #### install Google Cloud sdk:
 1. [might not need] download sdk from <a href="https://cloud.google.com/sdk/docs/">https://cloud.google.com/sdk/docs/</a>
 2. [might not need] double click `install.sh` to install 
-3. run `curl https://sdk.cloud.google.com | bash`, follow commands to install. Will need to authenticate via browser and then choose a project.
+3. run `curl https://sdk.cloud.google.com | bash`, follow commands to install. Will need to authenticate via browser and then choose a project. Once it tells you in the browser that you're authenticated,
+4. re-run `curl https://sdk.cloud.google.com | bash`
 
 ## Running the Downloader:
 #### invoke the proxy:
@@ -13,3 +14,5 @@ CS1951A Data Science
 
 #### run the file:
 `python3 youtube_download.py` -- be sure to change the user/channel id in question before running!
+
+##Using the 
