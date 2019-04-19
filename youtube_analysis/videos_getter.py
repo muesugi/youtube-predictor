@@ -1,9 +1,15 @@
+import sys
 import os
+
+configfile = '../config.py'
+sys.path.append(os.path.dirname(os.path.expanduser(configfile)))
+
+
 import json
 import config
 import pymysql
 import argparse
-import sys
+
 
 connection = pymysql.connect(host='127.0.0.1',
                             port = 3305,
