@@ -4,7 +4,7 @@ CS1951A Data Science
 ## Getting Started:
 #### Install Google Cloud sdk:
 1. [might not need] download sdk from <a href="https://cloud.google.com/sdk/docs/">https://cloud.google.com/sdk/docs/</a>
-2. [might not need] double click `install.sh` to install 
+2. [might not need] double click `install.sh` to install
 3. run `curl https://sdk.cloud.google.com | bash`, follow commands to install. Will need to authenticate via browser and then choose a project. Once it tells you in the browser that you're authenticated,
 4. re-run `curl https://sdk.cloud.google.com | bash`
 
@@ -18,3 +18,7 @@ CS1951A Data Science
 
 If you have multiple channel or user ids, you can now run them all at once! Use youtube\_multiple\_download.py instead.
 ie; `python3 youtube_multiple_download.py -c <channel-id1> <channel-id2> -u <user-id1>`
+
+#### If you got any "config not found" error when running things inside features folder:
+* go back up level to youtube_analysis folder (pwd shows youtube-predictor/youtube_analysis)
+* run `python3 features/duration_features.py `
