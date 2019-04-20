@@ -62,19 +62,29 @@ def run_regression(X, y):
 if __name__ == '__main__':
     # constrain video ids for all feature_vectors
     vids_and_counts = query_videos("SELECT id, viewCount FROM videos WHERE viewCount IS NOT NULL;")
+    vids_and_dur_and_counts = query_videos("SELECT id, duration, viewCount FROM videos WHERE viewCount IS NOT NULL;")
 
     video_ids = [tup[0] for tup in vids_and_counts]
     view_counts = [tup[1] for tup in vids_and_counts]
 
     # Examples
-    # 1. Let's try simple linear regression with the duration feature! (probably quite bad, since it's not linear)
-    simple_x = duration_features.feature_vector(video_ids)[0]
+    ## Let's try simple linear regression with the duration feature! (probably quite bad, since it's not linear)
+    simple_x = duration_features.feature_vector__plain_duration(video_ids)[0]
     simple_y = view_counts
+    print("--- Plain duration linear regression --- ")
+    simple_linear_regression(simple_x, simple_y)
 
-    # simple_linear_regression(simple_x, simple_y)
+    ## simple linear regression with the feature_vector__distance_to_peak!
+    distance_to_peak_x = duration_features.feature_vector__distance_to_peak(video_ids)[0]
+    distance_to_peak_y = view_counts
 
-    # 2. Multiple linear regression with the same thing; underlying calculations should be the same
-    # multiple_linear_regression(video_ids, [duration_features.feature_vector], view_counts)
+    print("--- Distance to peak duration linear regression --- ")
+    simple_linear_regression(distance_to_peak_x, distance_to_peak_y)
 
-    # 3. Multiple linear regression on top 50 words
+    # Multiple linear regression with the same thing; underlying calculations should be the same
+    print("--- Plain duration linear regression - multiple linear regression function instead --- ")
+    multiple_linear_regression(video_ids, [duration_features.feature_vector__plain_duration], view_counts)
+
+    # Multiple linear regression on top 50 words
+    print("--- Multiple linear regression on top 50 words --- ")
     multiple_linear_regression(video_ids, [title_features.smarter_topkstems_feature_vectors], view_counts)
