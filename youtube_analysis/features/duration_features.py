@@ -171,7 +171,6 @@ def feature_vector__distance_to_peak(video_ids=None):
     feature_vector = [abs(peak_x - video.duration) for video in video_id_objects]
     return [feature_vector]
 
-
 if __name__ == '__main__':
     duration_results = query_videos("SELECT id, duration, viewCount FROM videos WHERE viewCount IS NOT NULL;")
     duration_objects = interpret_query_results(duration_results)
@@ -190,6 +189,4 @@ if __name__ == '__main__':
     plot_curve(x_poly, y_poly, color="orange", show_plot=False)
     plot_point(peak_x, peak_y , marker='o', markersize=5, color="firebrick", show_plot=False)
 
-    # plt.show()
-
-    print(feature_vector__distance_to_peak())
+    plt.show()
