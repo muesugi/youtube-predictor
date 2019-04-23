@@ -2,7 +2,28 @@ import isodate
 import numpy as np
 import matplotlib.pyplot as plt
 
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+
 from youtube_analysis.videos_getter import query_videos
+
+##### Interpret and Store Query Results (query results -> Duration objects) #######
+class Duration:
+    # note the reordering of args from the stanard, to accept non-isodate durations
+    def __init__(self, vid, views, dur_as_isodate=None, duration_int=None):
+        self.id = vid
+        if duration_int:
+            self.duration = duration_int
+        else:
+            self.duration = isodate_to_secs(dur_as_isodate)
+        self.viewCount = views
+
+    def __str__(self):
+        return 'id: {0}, duration (secs): {1}, views: {2}'.format(
+            self.id, self.duration, self.viewCount)
+
+    def __repr__(self):
+        return str(self)
 
 def isodate_to_secs(ptstr):
     # Args:
@@ -12,99 +33,160 @@ def isodate_to_secs(ptstr):
     dur = isodate.parse_duration(ptstr)
     return int(dur.total_seconds())
 
-def duration_dict():
+def interpret_query_results(duration_results_from_query):
     # Returns:
-    #  Dictionary in the form videoid -> duration in seconds
+    #  list of Duration objects with id, duration, and viewcount
+    return [ Duration(vid, views, dur) for vid, dur, views in duration_results_from_query]
 
-    dur_dict = {}
-    duration_results = query_videos("SELECT id, duration FROM videos;")
+##### Process Duration Objects (Duration objects -> Duration objects) #####
+def filter_durations(duration_objects, video_ids=None, dur_cutoff=None, views_cutoff=None):
+    # filter duration object with one or more filters. All are optional.
+    def myfilter(d):
+        keep = True
 
-    for r_tuple in duration_results:
-        vid, dur = r_tuple
-        dur_dict[vid] = isodate_to_secs(dur)
+        # in video ids
+        keep = keep and (video_ids is None or d.id in video_ids)
+        if not keep:
+            print("filtering out a video id:", d.id)
 
-    return dur_dict
+        # under duration cutoff
+        keep = keep and (dur_cutoff is None or d.duration <= dur_cutoff)
 
-def feature_vector(video_ids):
-    duration_vector = [] # ordered list of durations duration
+        # under views cutoff if applicable
+        keep = keep and (views_cutoff is None or d.viewCount <= views_cutoff)
 
-    duration_results = query_videos("SELECT id, duration FROM videos;")
+        # can add more here!
 
-    for r_tuple in duration_results:
-        vid, dur = r_tuple
-        # check if in video_ids here rather than in query because it's cheaper
-        if vid in video_ids:
-            duration_vector.append(isodate_to_secs(dur))
+        return keep
 
-    return [duration_vector]
+    return list(filter(myfilter, duration_objects))
 
-def duration_plot_all():
-    # No params or return
-    # Plots all durations vs viewCount
+def grouped_durations(duration_objects, max_duration=3600, n_groups=30, show_plot=True):
+    # take a bunch of duration objects and group them by duration, into n_groups equal groups
+    buckets = np.linspace(0, max_duration, n_groups)
 
-    duration_results = query_videos("SELECT id, duration, viewCount FROM videos WHERE viewCount IS NOT NULL;")
+    grouped_duration_objects = []
 
-    X = []
+    # buckets contain durations
+    # bucket_min < (all durations in bucket) <= bucket_max
+    for i in range(len(buckets) - 1):
+        x_min = buckets[i] # exclusive
+        x_max = buckets[i + 1]
+
+        bucket_duration = (x_min + x_max) / 2
+        bucket_views = []
+
+        for dobj in duration_objects:
+            if x_min < dobj.duration and dobj.duration <= x_max:
+                bucket_views.append(dobj.viewCount)
+
+        avg_bucket_views = 0 if len(bucket_views) == 0 else sum(bucket_views) / len(bucket_views)
+
+        grouped_duration_objects.append(
+            Duration(None, avg_bucket_views, duration_int=bucket_duration)
+        )
+
+    return grouped_duration_objects
+
+##### Calculate Points from Duration Objects (Duration objects -> (one or more x, one or more y)) #######
+def points_from_durations(duration_objects):
+    # returns x and y from a list of duration objects
+    x = []
     y = []
 
-    for r_tuple in duration_results:
-        vid, dur, views = r_tuple
-        X.append(isodate_to_secs(dur))
-        y.append(views)
+    for d in duration_objects:
+        x.append(d.duration)
+        y.append(d.viewCount)
 
-    plt.scatter(np.array(X), np.array(y), alpha=0.5)
-    plt.title('Video durations x view counts')
+    return np.array(x), np.array(y)
+
+def points_for_polynomial_curve(duration_objects, degree=4):
+    # returns the points for a polynomial curve fitted to duration objects
+
+    x, y = points_from_durations(duration_objects)
+    polynom_coeffs = np.polyfit(x, y, degree)
+    polynom_func = np.poly1d(polynom_coeffs)
+
+    # use the estimated curve to get new points
+    x_poly = np.linspace(min(x), max(x), 50)
+    y_poly = polynom_func(x_poly)
+
+    return x_poly, y_poly
+
+def peak_point(duration_objects):
+    # calls points_for_polynomial_curve and gets the x, y of the peak point
+    x_poly, y_poly = points_for_polynomial_curve(duration_objects)
+
+    # gets duration with heighest avg view count
+    peak_index = np.argmax(y_poly)
+    return x_poly[peak_index], y_poly[peak_index]
+
+
+##### Plot Duration Objects (one or more x, one or more y -> None; plots) #####
+# for all, kwargs passes any extra named args (color, alpha, etc) to the plotting func itself
+
+def plot_scatter(x, y, show_plot=True, **kwargs):
+    plt.scatter(x, y, **kwargs)
+    plt.title('Video Duration x Average View Count')
     plt.xlabel('video duration in seconds')
     plt.ylabel('view counts')
-    plt.show()
+    if show_plot:
+        plt.show()
 
-def duration_plot_averages():
-    # No params or return
-    # Plots durations vs average viewCount for that duration,
-    # and then uses polyfit to draw a polynomial line representing this curve
+def plot_bars(x, heights, width, show_plot=True, **kwargs):
+    plt.bar(x, heights, width=width, **kwargs)
+    plt.title('Grouped Video Durations x Average View Count')
+    plt.xlabel('video duration in seconds')
+    plt.ylabel('view counts')
+    if show_plot:
+        plt.show()
 
+def plot_curve(x_poly, y_poly, show_plot=True, **kwargs):
+    plt.plot(x_poly, y_poly,  **kwargs)
+    if show_plot:
+        plt.show()
+
+def plot_point(x, y, show_plot=True, **kwargs):
+    plt.plot([x], [y], **kwargs)
+    if show_plot:
+        plt.show()
+
+##### feature vectors: use from linear_regression #####
+def feature_vector__plain_duration(video_ids=None):
     duration_results = query_videos("SELECT id, duration, viewCount FROM videos WHERE viewCount IS NOT NULL;")
+    duration_objects = interpret_query_results(duration_results)
+    video_id_objects = filter_durations(duration_objects, video_ids=video_ids)
 
-    dur_to_viewlist = {}
+    feature_vector = [d.duration for d in video_id_objects]
+    return [feature_vector]
 
-    for r_tuple in duration_results:
-        vid, dur, views = r_tuple
-        dur_as_secs = isodate_to_secs(dur)
-        if dur_as_secs in dur_to_viewlist:
-            dur_to_viewlist[dur_as_secs].append(views)
-        else:
-            dur_to_viewlist[dur_as_secs] = [views]
-    dur_to_viewavg = {dur: sum(viewlist)/len(viewlist) for dur, viewlist in dur_to_viewlist.items()}
+def feature_vector__distance_to_peak(video_ids=None):
+    duration_results = query_videos("SELECT id, duration, viewCount FROM videos WHERE viewCount IS NOT NULL;")
+    duration_objects = interpret_query_results(duration_results)
+    video_id_objects = filter_durations(duration_objects, video_ids=video_ids)
+    # print("testing feature vector,len(duration_objects), video_id_objects)
 
-    x_avg = list(dur_to_viewavg.keys())
-    y_avg = [dur_to_viewavg[dur] for dur in x_avg]
+    peak_x, _ = peak_point(video_id_objects)
 
-    plt.title('Video durations x view counts')
-    plt.xlabel('video duration in seconds')
-    plt.ylabel('view counts')
-
-    plt.scatter(np.array(x_avg), np.array(y_avg),  alpha=0.5)
-    x_restricted = []
-    y_restricted = []
-    for i, x in enumerate(x_avg):
-        if x < 3600: # 1 hour
-            x_restricted.append(x)
-            y_restricted.append(y_avg[i])
-    # polynom_coeffs = np.polyfit(x_restricted, y_restricted, 2)
-    # polynom_func = np.poly1d(polynom_coeffs)
-    #
-    # x_poly = np.linspace(min(x_restricted), max(x_restricted), 50)
-    # y_poly = polynom_func(x_poly)
-    #
-    # plt.plot(np.array(x_poly), np.array(y_poly),  color="orange")
-    # plt.show()
+    feature_vector = [abs(peak_x - video.duration) for video in video_id_objects]
+    return [feature_vector]
 
 if __name__ == '__main__':
-    video_to_duration = duration_dict()
+    duration_results = query_videos("SELECT id, duration, viewCount FROM videos WHERE viewCount IS NOT NULL;")
+    duration_objects = interpret_query_results(duration_results)
+    filtered_objects = filter_durations(duration_objects, dur_cutoff=3600)
+    grouped_durations = grouped_durations(filtered_objects)
 
-    sum_durations = sum(video_to_duration.values())
-    n_videos = len(video_to_duration)
-    print("total number of seconds in db:", sum_durations)
-    print("average number of seconds in db:", sum_durations/n_videos)
+    # Generate Points:
+    x_scatter, y_scatter = points_from_durations(filtered_objects)
+    x_grouped, y_grouped =  points_from_durations(grouped_durations)
+    x_poly, y_poly = points_for_polynomial_curve(grouped_durations)
+    peak_x, peak_y = peak_point(grouped_durations)
 
-    duration_plot_all()
+    # Plot Points
+    # plot_scatter(x_scatter, y_scatter, alpha=0.2,  show_plot=False) # uncommment to see all points, not just groups
+    plot_bars(x_grouped, y_grouped, width=x_poly[0]*2, edgecolor="black", color="w", show_plot=False)
+    plot_curve(x_poly, y_poly, color="orange", show_plot=False)
+    plot_point(peak_x, peak_y , marker='o', markersize=5, color="firebrick", show_plot=False)
+
+    plt.show()

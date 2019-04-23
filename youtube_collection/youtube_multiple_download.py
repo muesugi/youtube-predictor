@@ -5,7 +5,6 @@ import pymysql
 import argparse
 import sys
 
-
 import google.oauth2.credentials
 
 # REMEMBER TO INSTALL NECESSARY PACKAGES when running for the first time!
@@ -78,7 +77,7 @@ def all_videos_by_playlist_id(client, playlist_id):
             playlistId=playlist_id,
     )
     videos += playlist_list_response["items"]
-    # print("Total # results should be:", playlist_list_response["pageInfo"]["totalResults"])
+    print("Total # results should be:", playlist_list_response["pageInfo"]["totalResults"])
 
 
     # youtube data api uses pagination;
@@ -116,7 +115,7 @@ def all_video_data_by_playlist_id(client, playlist_id):
         ids_response = playlist_items_list_by_playlist_id(client, **kwargs)
 
         if is_first_call:
-            # print("Total # results should be:", ids_response["pageInfo"]["totalResults"])
+            print("Total # results should be:", ids_response["pageInfo"]["totalResults"])
             is_first_call = False
 
         ids_str = ",".join([vid["contentDetails"]["videoId"] for vid in ids_response["items"]])
@@ -168,14 +167,12 @@ def run_upload(cuid, is_user_id=False):
     else:
         print("channel_id: ", channel_id)
 
-    print(channel_id)
-
     ### 2. GET PLAYLIST ID OF ALL UPLOADS FROM THE CHANNEL ID ###
     related_playlists = related_playlists_by_channel_id( client,
                             part='contentDetails',
                             id=channel_id )
     uploaded_playlist_id = related_playlists["uploads"]
-    # print("uploaded_playlist_id: ", uploaded_playlist_id)
+    print("uploaded_playlist_id: ", uploaded_playlist_id)
 
     ### 3. GET VIDEO INFO FROM PLAYLIST ID & OUTPUT TO FILE ###
     # NOTE: this is just proof of concept, this is would be where we upload to a database.
