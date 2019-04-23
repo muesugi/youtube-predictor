@@ -17,18 +17,26 @@ def category_dict():
 
     return category_dict
 
+# feature vector for each category, indices corresponding to which video is in category
 def feature_vector(video_ids):
     category_vector = []
+
+    id_name = {1:[], 2:[], 10:[], 15:[], 17:[], 18:[], 19:[], 20:[], 21:[],
+    22:[], 23:[], 24:[], 25:[], 26:[], 27:[], 28:[], 29:[], 30:[], 31:[], 32:[],
+    33:[], 34:[], 35:[], 36:[], 37:[], 38:[], 39:[], 40:[], 41:[], 42:[], 43:[],
+    44:[]}
 
     category_results = query_videos("SELECT id, categoryId FROM videos;")
 
     for r_tuple in category_results:
         vid, cat = r_tuple
-        # check if in video_ids here rather than in query because it's cheaper
-        if vid in video_ids:
-            category_vector.append(cat)
+        for id in id_names:
+            if cat == id:
+                id_name[id].append(1)
+            else:
+                id_name[id].append(0)
 
-    return [category_vector]
+    return list(id_name.values())
 
 def category_plot_all():
     # No params or return
