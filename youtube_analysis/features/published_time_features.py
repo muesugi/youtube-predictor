@@ -16,125 +16,126 @@ def published_dict():
         vid, published = r_tuple
         published_time = parser.parse(published).time()
         if published_time < datetime.time(1,0,0):
-            if "12 am" in published_dict:
-                published_dict["12 am"] += 1
+            if "00:00-00:59" in published_dict:
+                published_dict["00:00-00:59"] += 1
             else:
-                published_dict["12 am"] = 1
+                published_dict["00:00-00:59"] = 1
         elif published_time < datetime.time(2,0,0):
-            if "1 am" in published_dict:
-                published_dict["1 am"] += 1
+            if "01:00-01:59" in published_dict:
+                published_dict["01:00-01:59"] += 1
             else:
-                published_dict["1 am"] = 1
+                published_dict["01:00-01:59"] = 1
         elif published_time < datetime.time(3,0,0):
-            if "2 am" in published_dict:
-                published_dict["2 am"] += 1
+            if "02:00-02:59" in published_dict:
+                published_dict["02:00-02:59"] += 1
             else:
-                published_dict["2 am"] = 1
+                published_dict["02:00-02:59"] = 1
         elif published_time < datetime.time(4,0,0):
-            if "3 am" in published_dict:
-                published_dict["3 am"] += 1
+            if "03:00-03:59" in published_dict:
+                published_dict["03:00-03:59"] += 1
             else:
-                published_dict["3 am"] = 1
+                published_dict["03:00-03:59"] = 1
         elif published_time < datetime.time(5,0,0):
-            if "4 am" in published_dict:
-                published_dict["4 am"] += 1
+            if "04:00-04:59" in published_dict:
+                published_dict["04:00-04:59"] += 1
             else:
-                published_dict["4 am"] = 1
+                published_dict["04:00-04:59"] = 1
         elif published_time < datetime.time(6,0,0):
-            if "5 am" in published_dict:
-                published_dict["5 am"] += 1
+            if "05:00-05:59" in published_dict:
+                published_dict["05:00-05:59"] += 1
             else:
-                published_dict["5 am"] = 1
+                published_dict["05:00-05:59"] = 1
         elif published_time < datetime.time(7,0,0):
-            if "6 am" in published_dict:
-                published_dict["6 am"] += 1
+            if "06:00-06:59" in published_dict:
+                published_dict["06:00-06:59"] += 1
             else:
-                published_dict["6 am"] = 1
+                published_dict["06:00-06:59"] = 1
         elif published_time < datetime.time(8,0,0):
-            if "7 am" in published_dict:
-                published_dict["7 am"] += 1
+            if "07:00-07:59" in published_dict:
+                published_dict["07:00-07:59"] += 1
             else:
-                published_dict["7 am"] = 1
+                published_dict["07:00-07:59"] = 1
         elif published_time < datetime.time(9,0,0):
-            if "8 am" in published_dict:
-                published_dict["8 am"] += 1
+            if "08:00-08:59" in published_dict:
+                published_dict["08:00-08:59"] += 1
             else:
-                published_dict["8 am"] = 1
+                published_dict["08:00-08:59"] = 1
         elif published_time < datetime.time(10,0,0):
-            if "9 am" in published_dict:
-                published_dict["9 am"] += 1
+            if "09:00-09:59" in published_dict:
+                published_dict["09:00-09:59"] += 1
             else:
-                published_dict["9 am"] = 1
+                published_dict["09:00-09:59"] = 1
         elif published_time < datetime.time(11,0,0):
-            if "10 am" in published_dict:
-                published_dict["10 am"] += 1
+            if "10:00-10:59" in published_dict:
+                published_dict["10:00-10:59"] += 1
             else:
-                published_dict["10 am"] = 1
+                published_dict["10:00-10:59"] = 1
         elif published_time < datetime.time(12,0,0):
-            if "11 am" in published_dict:
-                published_dict["11 am"] += 1
+            if "11:00-11:59" in published_dict:
+                published_dict["11:00-11:59"] += 1
             else:
-                published_dict["11 am"] = 1
+                published_dict["11:00-11:59"] = 1
         elif published_time < datetime.time(13,0,0):
-            if "12 pm" in published_dict:
-                published_dict["12 pm"] += 1
+            if "12:00-12:59" in published_dict:
+                published_dict["12:00-12:59"] += 1
             else:
-                published_dict["12 pm"] = 1
+                published_dict["12:00-12:59"] = 1
         elif published_time < datetime.time(14,0,0):
-            if "1 pm" in published_dict:
-                published_dict["1 pm"] += 1
+            if "13:00-13:59" in published_dict:
+                published_dict["13:00-13:59"] += 1
             else:
-                published_dict["1 pm"] = 1
+                published_dict["13:00-13:59"] = 1
         elif published_time < datetime.time(15,0,0):
-            if "2 pm" in published_dict:
-                published_dict["2 pm"] += 1
+            if "14:00-14:59" in published_dict:
+                published_dict["14:00-14:59"] += 1
             else:
-                published_dict["2 pm"] = 1
+                published_dict["14:00-14:59"] = 1
         elif published_time < datetime.time(16,0,0):
-            if "3 pm" in published_dict:
-                published_dict["3 pm"] += 1
+            if "15:00-15:59" in published_dict:
+                published_dict["15:00-15:59"] += 1
             else:
-                published_dict["3 pm"] = 1
+                published_dict["15:00-15:59"] = 1
         elif published_time < datetime.time(17,0,0):
-            if "4 pm" in published_dict:
-                published_dict["4 pm"] += 1
+            if "16:00-16:59" in published_dict:
+                published_dict["16:00-16:59"] += 1
             else:
-                published_dict["4 pm"] = 1
+                published_dict["16:00-16:59"] = 1
         elif published_time < datetime.time(18,0,0):
-            if "5 pm" in published_dict:
-                published_dict["5 pm"] += 1
+            if "17:00-17:59" in published_dict:
+                published_dict["17:00-17:59"] += 1
             else:
-                published_dict["5 pm"] = 1
+                published_dict["17:00-17:59"] = 1
         elif published_time < datetime.time(19,0,0):
-            if "6 pm" in published_dict:
-                published_dict["6 pm"] += 1
+            if "18:00-18:59" in published_dict:
+                published_dict["18:00-18:59"] += 1
             else:
-                published_dict["6 pm"] = 1
+                published_dict["18:00-18:59"] = 1
         elif published_time < datetime.time(20,0,0):
-            if "7 pm" in published_dict:
-                published_dict["7 pm"] += 1
+            if "19:00-19:59" in published_dict:
+                published_dict["19:00-19:59"] += 1
             else:
-                published_dict["7 pm"] = 1
+                published_dict["19:00-19:59"] = 1
         elif published_time < datetime.time(21,0,0):
-            if "8 pm" in published_dict:
-                published_dict["8 pm"] += 1
+            if "20:00-20:59" in published_dict:
+                published_dict["20:00-20:59"] += 1
             else:
-                published_dict["8 pm"] = 1
+                published_dict["20:00-20:59"] = 1
         elif published_time < datetime.time(22,0,0):
-            if "9 pm" in published_dict:
-                published_dict["9 pm"] += 1
+            if "21:00-21:59" in published_dict:
+                published_dict["21:00-21:59"] += 1
             else:
-                published_dict["9 pm"] = 1
+                published_dict["21:00-21:59"] = 1
         elif published_time < datetime.time(23,0,0):
-            if "10 pm" in published_dict:
-                published_dict["10 pm"] += 1
+            if "22:00-22:59" in published_dict:
+                published_dict["22:00-22:59"] += 1
             else:
-                published_dict["10 pm"] = 1
+                published_dict["22:00-22:59"] = 1
         elif published_time <= datetime.time(23,59,59):
-            if "11 pm - 11" in published_dict:
-                published_dict["11 pm"] += 1
+            if "23:00-23:59" in published_dict:
+                published_dict["23:00-23:59"] += 1
             else:
-                published_dict["11 pm"] = 1
+                published_dict["23:00-23:59"] = 1
+
 
     return published_dict
 
@@ -177,13 +178,17 @@ def published_plot_all():
 
     published_count = published_dict()
 
-    X = list(published_count.keys())
-    y = list(published_count.values())
+    X = []
+    y = []
+    for key, value in sorted(published_count.items(), key=lambda item: item[0]):
+        X.append(key)
+        y.append(value)
 
-    plt.bar(np.arange(len(X)), np.array(y), align='center', alpha=0.5)
+    plt.bar(np.arange(len(X)), np.array(y), align='center')
     plt.xticks(np.arange(len(X)), np.array(X), rotation='vertical')
-    plt.xlabel('time of day')
-    plt.ylabel('number of videos published')
+    plt.title("Number of Videos Published per Hour")
+    plt.xlabel('Published Time')
+    plt.ylabel('Number of Videos Published')
     plt.show()
 
 def duration_plot_averages():
@@ -199,140 +204,148 @@ def duration_plot_averages():
         id, publishedAt, viewCount = r_tuple
         published_time = parser.parse(publishedAt).time()
         if published_time < datetime.time(1,0,0):
-            if "12 am" in published_dict:
-                published_dict["12 am"].append(viewCount)
+            if "00:00-00:59" in published_dict:
+                published_dict["00:00-00:59"].append(viewCount)
             else:
-                published_dict["12 am"] = [viewCount]
+                published_dict["00:00-00:59"] = [viewCount]
         elif published_time < datetime.time(2,0,0):
-            if "1 am" in published_dict:
-                published_dict["1 am"].append(viewCount)
+            if "01:00-01:59" in published_dict:
+                published_dict["01:00-01:59"].append(viewCount)
             else:
-                published_dict["1 am"] = [viewCount]
+                published_dict["01:00-01:59"] = [viewCount]
         elif published_time < datetime.time(3,0,0):
-            if "2 am" in published_dict:
-                published_dict["2 am"].append(viewCount)
+            if "02:00-02:59" in published_dict:
+                published_dict["02:00-02:59"].append(viewCount)
             else:
-                published_dict["2 am"] = [viewCount]
+                published_dict["02:00-02:59"] = [viewCount]
         elif published_time < datetime.time(4,0,0):
-            if "3 am" in published_dict:
-                published_dict["3 am"].append(viewCount)
+            if "03:00-03:59" in published_dict:
+                published_dict["03:00-03:59"].append(viewCount)
             else:
-                published_dict["3 am"] = [viewCount]
+                published_dict["03:00-03:59"] = [viewCount]
         elif published_time < datetime.time(5,0,0):
-            if "4 am" in published_dict:
-                published_dict["4 am"].append(viewCount)
+            if "04:00-04:59" in published_dict:
+                published_dict["04:00-04:59"].append(viewCount)
             else:
-                published_dict["4 am"] = [viewCount]
+                published_dict["04:00-04:59"] = [viewCount]
         elif published_time < datetime.time(6,0,0):
-            if "5 am" in published_dict:
-                published_dict["5 am"].append(viewCount)
+            if "05:00-05:59" in published_dict:
+                published_dict["05:00-05:59"].append(viewCount)
             else:
-                published_dict["5 am"] = [viewCount]
+                published_dict["05:00-05:59"] = [viewCount]
         elif published_time < datetime.time(7,0,0):
-            if "6 am" in published_dict:
-                published_dict["6 am"].append(viewCount)
+            if "06:00-06:59" in published_dict:
+                published_dict["06:00-06:59"].append(viewCount)
             else:
-                published_dict["6 am"] = [viewCount]
+                published_dict["06:00-06:59"] = [viewCount]
         elif published_time < datetime.time(8,0,0):
-            if "7 am" in published_dict:
-                published_dict["7 am"].append(viewCount)
+            if "07:00-07:59" in published_dict:
+                published_dict["07:00-07:59"].append(viewCount)
             else:
-                published_dict["7 am"] = [viewCount]
+                published_dict["07:00-07:59"] = [viewCount]
         elif published_time < datetime.time(9,0,0):
-            if "8 am" in published_dict:
-                published_dict["8 am"].append(viewCount)
+            if "08:00-08:59" in published_dict:
+                published_dict["08:00-08:59"].append(viewCount)
             else:
-                published_dict["8 am"] = [viewCount]
+                published_dict["08:00-08:59"] = [viewCount]
         elif published_time < datetime.time(10,0,0):
-            if "9 am" in published_dict:
-                published_dict["9 am"].append(viewCount)
+            if "09:00-09:59" in published_dict:
+                published_dict["09:00-09:59"].append(viewCount)
             else:
-                published_dict["9 am"] = [viewCount]
+                published_dict["09:00-09:59"] = [viewCount]
         elif published_time < datetime.time(11,0,0):
-            if "10 am" in published_dict:
-                published_dict["10 am"].append(viewCount)
+            if "10:00-10:59" in published_dict:
+                published_dict["10:00-10:59"].append(viewCount)
             else:
-                published_dict["10 am"] = [viewCount]
+                published_dict["10:00-10:59"] = [viewCount]
         elif published_time < datetime.time(12,0,0):
-            if "11 am" in published_dict:
-                published_dict["11 am"].append(viewCount)
+            if "11:00-11:59" in published_dict:
+                published_dict["11:00-11:59"].append(viewCount)
             else:
-                published_dict["11 am"] = [viewCount]
+                published_dict["11:00-11:59"] = [viewCount]
         elif published_time < datetime.time(13,0,0):
-            if "12 pm" in published_dict:
-                published_dict["12 pm"].append(viewCount)
+            if "12:00-12:59" in published_dict:
+                published_dict["12:00-12:59"].append(viewCount)
             else:
-                published_dict["12 pm"] = [viewCount]
+                published_dict["12:00-12:59"] = [viewCount]
         elif published_time < datetime.time(14,0,0):
-            if "1 pm" in published_dict:
-                published_dict["1 pm"].append(viewCount)
+            if "13:00-13:59" in published_dict:
+                published_dict["13:00-13:59"].append(viewCount)
             else:
-                published_dict["1 pm"] = [viewCount]
+                published_dict["13:00-13:59"] = [viewCount]
         elif published_time < datetime.time(15,0,0):
-            if "2 pm" in published_dict:
-                published_dict["2 pm"].append(viewCount)
+            if "14:00-14:59" in published_dict:
+                published_dict["14:00-14:59"].append(viewCount)
             else:
-                published_dict["2 pm"] = [viewCount]
+                published_dict["14:00-14:59"] = [viewCount]
         elif published_time < datetime.time(16,0,0):
-            if "3 pm" in published_dict:
-                published_dict["3 pm"].append(viewCount)
+            if "15:00-15:59" in published_dict:
+                published_dict["15:00-15:59"].append(viewCount)
             else:
-                published_dict["3 pm"] = [viewCount]
+                published_dict["15:00-15:59"] = [viewCount]
         elif published_time < datetime.time(17,0,0):
-            if "4 pm" in published_dict:
-                published_dict["4 pm"].append(viewCount)
+            if "16:00-16:59" in published_dict:
+                published_dict["16:00-16:59"].append(viewCount)
             else:
-                published_dict["4 pm"] = [viewCount]
+                published_dict["16:00-16:59"] = [viewCount]
         elif published_time < datetime.time(18,0,0):
-            if "5 pm" in published_dict:
-                published_dict["5 pm"].append(viewCount)
+            if "17:00-17:59" in published_dict:
+                published_dict["17:00-17:59"].append(viewCount)
             else:
-                published_dict["5 pm"] = [viewCount]
+                published_dict["17:00-17:59"] = [viewCount]
         elif published_time < datetime.time(19,0,0):
-            if "6 pm" in published_dict:
-                published_dict["6 pm"].append(viewCount)
+            if "18:00-18:59" in published_dict:
+                published_dict["18:00-18:59"].append(viewCount)
             else:
-                published_dict["6 pm"] = [viewCount]
+                published_dict["18:00-18:59"] = [viewCount]
         elif published_time < datetime.time(20,0,0):
-            if "7 pm" in published_dict:
-                published_dict["7 pm"].append(viewCount)
+            if "19:00-19:59" in published_dict:
+                published_dict["19:00-19:59"].append(viewCount)
             else:
-                published_dict["7 pm"] = [viewCount]
+                published_dict["19:00-19:59"] = [viewCount]
         elif published_time < datetime.time(21,0,0):
-            if "8 pm" in published_dict:
-                published_dict["8 pm"].append(viewCount)
+            if "20:00-20:59" in published_dict:
+                published_dict["20:00-20:59"].append(viewCount)
             else:
-                published_dict["8 pm"] = [viewCount]
+                published_dict["20:00-20:59"] = [viewCount]
         elif published_time < datetime.time(22,0,0):
-            if "9 pm" in published_dict:
-                published_dict["9 pm"].append(viewCount)
+            if "21:00-21:59" in published_dict:
+                published_dict["21:00-21:59"].append(viewCount)
             else:
-                published_dict["9 pm"] = [viewCount]
+                published_dict["21:00-21:59"] = [viewCount]
         elif published_time < datetime.time(23,0,0):
-            if "10 pm" in published_dict:
-                published_dict["10 pm"].append(viewCount)
+            if "22:00-22:59" in published_dict:
+                published_dict["22:00-22:59"].append(viewCount)
             else:
-                published_dict["10 pm"] = [viewCount]
+                published_dict["22:00-22:59"] = [viewCount]
         elif published_time <= datetime.time(23,59,59):
-            if "11 pm - 11" in published_dict:
-                published_dict["11 pm"].append(viewCount)
+            if "23:00-23:59" in published_dict:
+                published_dict["23:00-23:59"].append(viewCount)
             else:
-                published_dict["11 pm"] = [viewCount]
+                published_dict["23:00-23:59"] = [viewCount]
 
     published_to_viewavg = {published: sum(viewlist)/len(viewlist) for published, viewlist in published_dict.items()}
 
-    x_avg = list(published_dict.keys())
-    y_avg = [published_to_viewavg[published] for published in x_avg]
+    x_avg = []
+    y_avg = []
+    for key, value in sorted(published_to_viewavg.items(), key=lambda item: item[0]):
+        x_avg.append(key)
+        y_avg.append(value)
+        # print("%s: %s" % (key, value))
 
-    plt.bar(np.arange(len(x_avg)), np.array(y_avg), align='center', alpha=0.5)
+    # x_avg = list(published_dict.keys())
+    # y_avg = [published_to_viewavg[published] for published in x_avg]
+
+    plt.bar(np.arange(len(x_avg)), np.array(y_avg), align='center', color='#2B8CBF')
     plt.xticks(np.arange(len(x_avg)), np.array(x_avg), rotation='vertical')
 
-    plt.xlabel('published time')
-    plt.ylabel('average view counts')
+    plt.title("Average Views per Video for Each Published Time")
+    plt.xlabel('Published Time')
+    plt.ylabel('Average View Counts')
 
     plt.show()
 
 if __name__ == '__main__':
     # published_dict()
-    # published_plot_all()
+    published_plot_all()
     duration_plot_averages()

@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from youtube_analysis.videos_getter import query_videos
+from math import log10, floor
 
 def category_dict():
     # Returns:
@@ -89,19 +90,58 @@ def category_plot_all():
         else:
             category_count[cat] = 1
 
-    y_pos = np.arange(len(category_count))
-    category_ids = list(category_count.keys())
+    print(category_count[2])
+
+    # del category_count['Autos & Vehicles']
+    # del category_count['Nonprofits & Activism']
+    # del category_count['Pets & Animals']
+    # del category_count['Music']
+    # del category_count['Film & Animation']
+    # del category_count['Sports']
+    # del category_count['Science & Technology']
+    # del category_count['News & Politics']
+
+    del category_count[2]
+    del category_count[29]
+    del category_count[15]
+    del category_count[10]
+    del category_count[1]
+    del category_count[17]
+    del category_count[28]
+    del category_count[25]
+
+    num_videos = sum(category_count.values())
+
     categories = []
+    def round_to_1(x):
+        return round(x, -int(floor(log10(abs(x)))))
 
-    for id in category_ids:
-        categories.append(id_name[id])
+    for key, value in category_count.items():
+        categories.append(id_name[key] + " " + str(round_to_1((value/num_videos) * 100)) + "%")
 
+
+    # y_pos = np.arange(len(category_count))
+    # category_ids = list(category_count.keys())
+    #
+    #
+    # for id in category_ids:
+    #
+    #
     vals = list(category_count.values())
 
-    plt.bar(y_pos, vals, align = 'center', alpha=0.5)
-    plt.xticks(y_pos, categories, rotation='vertical')
-    plt.xlabel('Category')
-    plt.ylabel('Number of Videos')
+
+
+    # plt.bar(y_pos, vals, align = 'center', alpha=0.5)
+    # plt.xticks(y_pos, categories, rotation='vertical')
+    # plt.xlabel('Category')
+    # plt.ylabel('Number of Videos')
+    # plt.title('Number of Videos per Category')
+
+    patches, texts = plt.pie(vals, startangle=90)
+
+    plt.legend(patches, categories, loc="best")
+    plt.axis('equal')
+    plt.tight_layout()
     plt.show()
 
 def category_plot_averages():
@@ -165,13 +205,14 @@ def category_plot_averages():
 
     y_pos = np.arange(len(y_avg))
 
-    plt.bar(y_pos, y_avg, align = 'center', alpha=0.5)
+    plt.bar(y_pos, y_avg, align = 'center')
     plt.xticks(y_pos, x, rotation='vertical')
     plt.xlabel('Category')
     plt.ylabel('Average Number of Views')
+    plt.title('Average Number of Views per Video for Each Category')
     plt.show()
 
 if __name__ == '__main__':
-    video_to_category = category_dict()
+    # video_to_category = category_dict()
     category_plot_all()
     category_plot_averages()
