@@ -127,17 +127,11 @@ def peak_point(duration_objects):
 
 def plot_scatter(x, y, show_plot=True, **kwargs):
     plt.scatter(x, y, **kwargs)
-    plt.title('Video Duration x Average View Count')
-    plt.xlabel('video duration in seconds')
-    plt.ylabel('view counts')
     if show_plot:
         plt.show()
 
 def plot_bars(x, heights, width, show_plot=True, **kwargs):
     plt.bar(x, heights, width=width, **kwargs)
-    plt.title('Grouped Video Durations x Average View Count')
-    plt.xlabel('video duration in seconds')
-    plt.ylabel('view counts')
     if show_plot:
         plt.show()
 
@@ -174,8 +168,8 @@ def feature_vector__distance_to_peak(video_ids=None):
 if __name__ == '__main__':
     duration_results = query_videos("SELECT id, duration, viewCount FROM videos WHERE viewCount IS NOT NULL;")
     duration_objects = interpret_query_results(duration_results)
-    filtered_objects = filter_durations(duration_objects, dur_cutoff=3600)
-    grouped_durations = grouped_durations(filtered_objects)
+    filtered_objects = filter_durations(duration_objects, dur_cutoff=4600, views_cutoff=None)
+    grouped_durations = grouped_durations(filtered_objects, max_duration=4600)
 
     # Generate Points:
     x_scatter, y_scatter = points_from_durations(filtered_objects)
@@ -184,9 +178,22 @@ if __name__ == '__main__':
     peak_x, peak_y = peak_point(grouped_durations)
 
     # Plot Points
-    # plot_scatter(x_scatter, y_scatter, alpha=0.2,  show_plot=False) # uncommment to see all points, not just groups
-    plot_bars(x_grouped, y_grouped, width=x_poly[0]*2, edgecolor="black", color="w", show_plot=False)
+    plt.title('Video Duration x Average Number of Views')
+    plt.xlabel('Video Duration in Seconds')
+    plt.ylabel('Average Number of Views per Video')
+
+    plot_bars(x_grouped, y_grouped, width=x_poly[0]*2, edgecolor="w", show_plot=False)
     plot_curve(x_poly, y_poly, color="orange", show_plot=False)
     plot_point(peak_x, peak_y , marker='o', markersize=5, color="firebrick", show_plot=False)
-
+    plt.tight_layout()
     plt.show()
+
+    # plt.title('Video Duration x Number of Views')
+    # plt.xlabel('Video Duration in Seconds')
+    # plt.ylabel('Number of Views')
+    # plot_scatter(x_scatter, y_scatter, alpha=0.2,  show_plot=False) # uncommment to see all points, not just groups
+    # plot_bars(x_grouped, y_grouped, width=x_poly[0]*2, edgecolor="black", color="w", show_plot=False)
+    # plot_curve(x_poly, y_poly, color="orange", show_plot=False)
+    # plot_point(peak_x, peak_y , marker='o', markersize=5, color="firebrick", show_plot=False)
+    # plt.tight_layout()
+    # plt.show()
